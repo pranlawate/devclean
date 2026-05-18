@@ -24,10 +24,10 @@ CRUFT = {
     "BUILD": CRUFT_BUILD,
     "IDE": CRUFT_IDE,
 }
-rules = []
 
 
 def get_rules():
+    rules = []
     for category, name in CRUFT.items():  # "Python" : CRUFT_PYTHON
         rules.extend([{"name": eachname, "category": category} for eachname in name])
     return rules
