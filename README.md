@@ -5,7 +5,7 @@ Find and remove development cruft (`__pycache__`, `node_modules`, `.tox`, etc.) 
 ## Installation
 
 ```bash
-pip install devclean
+pip install git+https://github.com/plawate/devclean.git
 ```
 
 Or install from source:
@@ -13,7 +13,7 @@ Or install from source:
 ```bash
 git clone https://github.com/plawate/devclean.git
 cd devclean
-pip install -e .
+pip install .
 ```
 
 ## Usage
