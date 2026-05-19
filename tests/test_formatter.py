@@ -1,4 +1,6 @@
-from devclean.formatter import format_size
+import pytest
+
+from devclean.formatter import format_results, format_size
 
 
 def test_format_size_bytes():
@@ -22,4 +24,27 @@ def test_format_size_gb():
 
 
 def test_format_size_wrong_input():
-    assert "Wrong input" in format_size("Pranav")
+    with pytest.raises(TypeError):
+        format_size("Pranav")
+
+
+def test_format_results_empty():
+    assert format_results([]) == "No cruft found."
+
+
+def test_format_results_single_item():
+    items = [{"name": "__pycache__", "path": "/tmp/__pycache__", "size": 100}]
+    output = format_results(items)
+    assert "__pycache__" in output
+    assert "100 B" in output
+    assert "1 items" in output
+
+
+def test_format_results_total_size():
+    items = [
+        {"name": "__pycache__", "path": "/a", "size": 512},
+        {"name": "node_modules", "path": "/b", "size": 512},
+    ]
+    output = format_results(items)
+    assert "2 items" in output
+    assert "1.0 KB" in output

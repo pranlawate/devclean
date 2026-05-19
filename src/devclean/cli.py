@@ -2,7 +2,7 @@ import argparse
 import sys
 
 from devclean.cleaner import clean
-from devclean.formatter import format_size
+from devclean.formatter import format_results, format_size
 from devclean.scanner import scan
 
 
@@ -18,21 +18,10 @@ def build_parser():
 
     clean_parser = subparsers.add_parser("clean", help="Remove cruft directories")
     clean_parser.add_argument("path", nargs="?", default=".")
-    clean_parser.add_argument("--yes", action="store_true", help="Skip confirmation prompt")
-    clean_parser.add_argument("--dry-run", action="store_true", help="Show what would be deleted")
+    clean_parser.add_argument("-y", "--yes", action="store_true", help="Skip confirmation prompt")
+    clean_parser.add_argument("-n", "--dry-run", action="store_true", help="Show what would be deleted")
 
     return parser
-
-
-def print_results(results):
-    """Print scan results as a formatted table."""
-    if not results:
-        print("No cruft found.")
-        return
-    for item in results:
-        print(f"  {item['name']:<20} {format_size(item['size']):>10}    {item['path']}")
-    total = sum(r["size"] for r in results)
-    print(f"\n  {len(results)} items, {format_size(total)} reclaimable")
 
 
 def main(argv=None):
@@ -45,7 +34,7 @@ def main(argv=None):
 
     if args.command == "scan":
         results = scan(args.path)
-        print_results(results)
+        print(format_results(results))
 
     elif args.command == "clean":
         results = scan(args.path)
@@ -53,7 +42,7 @@ def main(argv=None):
             print("No cruft found.")
             return
 
-        print_results(results)
+        print(format_results(results))
 
         if args.dry_run:
             print("\n  Dry run -- nothing deleted.")
