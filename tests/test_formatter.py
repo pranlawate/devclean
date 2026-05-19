@@ -19,3 +19,7 @@ def test_format_size_mb_rounding():
 
 def test_format_size_gb():
     assert format_size(2147483648) == "2.0 GB"
+
+
+def test_format_size_wrong_input():
+    assert "Wrong input" in format_size("Pranav")
